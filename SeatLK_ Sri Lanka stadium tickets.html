@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SeatLK: Sri Lanka stadium tickets</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#eaf1f0;--card:#fff;--ink:#0f2a2e;--mut:#5d7479;--line:#d3e0de;--acc:#0e6b73;--onacc:#fff;--ok:#c8e6e2;--taken:#c4cfce;--sel:#e0a526;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1a1d;--card:#122529;--ink:#e8f3f2;--mut:#8fa9ad;--line:#22393e;--acc:#4fd1c5;--onacc:#06211f;--ok:#1d4a4d;--taken:#2c3f43}}
+:root[data-theme="dark"]{--bg:#0b1a1d;--card:#122529;--ink:#e8f3f2;--mut:#8fa9ad;--line:#22393e;--acc:#4fd1c5;--onacc:#06211f;--ok:#1d4a4d;--taken:#2c3f43}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 15px/1.45 Figtree,system-ui,sans-serif}
+h1,h2,h3,.logo{font-family:"Bricolage Grotesque",Figtree,sans-serif;margin:0}
+header{max-width:1280px;margin:auto;padding:18px 16px 4px}
+.logo{font-size:30px;font-weight:800;letter-spacing:-.02em}.logo span{color:var(--acc)}
+header p{margin:2px 0 0;color:var(--mut)}
+nav{display:grid;gap:10px;padding:12px 16px;max-width:1280px;margin:auto}.tabs{display:flex;gap:6px;flex-wrap:wrap}.tab{border:0;border-bottom:2px solid transparent;background:none;color:var(--mut);font:600 15px Figtree,sans-serif;padding:6px 10px;cursor:pointer}.tab.on{color:var(--ink);border-color:var(--acc)}.tab small{font-weight:400}#venues{display:flex;gap:8px;flex-wrap:wrap;max-height:150px;overflow-y:auto}
+.chip{flex:none;text-align:left;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:8px 12px;border-radius:10px;font:inherit;cursor:pointer;display:grid}
+.chip small{color:var(--mut)}.chip.on{border-color:var(--acc);box-shadow:0 0 0 1px var(--acc)}
+main{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(300px,1fr);gap:16px;padding:0 16px 16px;max-width:1280px;margin:auto}
+aside{display:grid;gap:16px;align-content:start}
+@media(max-width:860px){main{grid-template-columns:1fr}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:8px;min-height:36px;margin-bottom:8px}
+.mut{color:var(--mut)}
+svg{width:100%;height:auto;display:block;color:var(--ink);touch-action:manipulation}
+.blk{cursor:pointer;opacity:.85;stroke:var(--card);stroke-width:1;transition:opacity .2s}.blk:hover{opacity:1}
+.lb{font:700 11px "Bricolage Grotesque",sans-serif;fill:#fff;pointer-events:none}
+.z .blk{opacity:.12;pointer-events:none}.z .blk.on{opacity:.3}.z .lb{display:none}
+.s{fill:var(--ok);stroke:var(--acc);stroke-width:1;vector-effect:non-scaling-stroke;cursor:pointer}.s:hover{fill:var(--acc)}
+.s.x{fill:var(--taken);stroke:none;cursor:not-allowed}.s.sel{fill:var(--sel);stroke:#7a5200}
+.leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;color:var(--mut);font-size:13px}.leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;background:var(--ok);border:1px solid var(--acc)}
+.leg i.t{background:var(--taken);border:0}.leg i.y{background:var(--sel);border-color:#7a5200}
+canvas{width:100%;height:auto;display:block;border-radius:10px;background:#1d2a3a}
+h2{font-size:22px;letter-spacing:-.01em}h3{font-size:17px;margin-bottom:8px}
+.row{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}.tot{border:0;font-size:17px}
+.rm{border:0;background:none;color:var(--mut);font-size:18px;cursor:pointer}
+.go{background:var(--acc);color:var(--onacc);border:0;border-radius:10px;padding:11px 14px;font:600 15px Figtree,sans-serif;cursor:pointer;width:100%}
+.ghost{border:1px solid var(--line);background:none;color:var(--ink);border-radius:10px;padding:6px 12px;font:inherit;cursor:pointer}
+#modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:grid;place-items:center;z-index:9}#modal[hidden]{display:none}
+.box{background:var(--card);padding:20px;border-radius:14px;width:min(92vw,380px);display:grid;gap:10px}
+input{font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
+.btns{display:flex;gap:8px}.note{max-width:1280px;margin:0 auto;padding:0 16px 24px;color:var(--mut);font-size:13px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+</style></head><body>
+<header><div class="logo">Seat<span>LK</span></div><p>Pick your block, pick your seat, check the view before you book.</p></header>
+<nav><div class="tabs" id="tabs"></div><input id="q" type="search" placeholder="Search a venue or town" aria-label="Search venues"><div id="venues"></div></nav>
+<main>
+<section class="card"><div class="bar"><div id="crumb"></div><button class="ghost" id="back" hidden>Back to stadium</button></div>
+<svg id="svg" viewBox="0 0 800 600" role="img" aria-label="Stadium seating map"></svg>
+<div class="leg"><span><i></i>Available</span><span><i class="t"></i>Taken</span><span><i class="y"></i>Your pick</span></div></section>
+<aside><div class="card" id="info"></div>
+<div class="card"><h3>View from your seat</h3><canvas id="pov" width="640" height="360"></canvas><p class="mut" id="povcap" style="margin:8px 0 0"></p></div>
+<div class="card" id="cart"></div></aside></main>
+<p class="note">Demo data: stand layouts are generic templates sized to each venue, not official plans; prices, events and seat availability are illustrative, and the seat view is a simplified 3D render, not official stadium imagery.</p>
+<div id="modal" hidden></div>
+<script>
+const $=id=>document.getElementById(id),svg=$('svg'),CX=400,CY=300,L=i=>String.fromCharCode(65+i),fmt=n=>'LKR '+n.toLocaleString();
+const COL={VIP:'#d9922b',Lower:'#1f8f7e',Upper:'#3f6fb5',Floor:'#b4478f'};
+/* name;location;size class (1 small, 2 medium, 3 large);c=concert hall, r=rugby */
+const G=[['in','Indoor stadiums',`Sugathadasa Indoor Stadium;Colombo 13;3;c
+Torrington Indoor Stadium;Colombo 07;2
+Royal College Indoor Sports Complex;Colombo 07;2
+Sri Lanka Foundation Indoor Stadium;Colombo 07;2;c
+S. Thomas’ College Indoor Sports Complex;Mount Lavinia;2
+U-Pro Colombo Indoor Sports Complex;Thalawathugoda;1
+Uva Province Indoor Stadium;Bandarawela;2
+Wathupitiwala Indoor Stadium;Nittambuwa;2
+Bandaragama Indoor Stadium;Bandaragama;2
+Royal Mass Indoor Stadium;Colombo 07;1
+Asian Indoor Complex;Panadura;1
+ATHLO Indoor Sports;Madawala, Kandy;1
+Sanya Indoor Stadium;Wellampitiya;1
+Indoor World;Wellampitiya;1
+Ark Sports Indoor Complex;Wattala;1
+The Pitch Indoor Stadium;Attidiya;1
+The Pitch Indoor Stadium;Maharagama;1
+The Pitch Indoor Stadium;Moratuwa;1
+Nelum Pokuna Theatre;Colombo 07;2;c`],
+['gr','Outdoor grounds',`Sugathadasa Outdoor Stadium;Colombo 13;3
+Diyagama Mahinda Rajapaksa International Sports Complex;Homagama;3
+Bogambara Stadium;Kandy;2
+D.A. Rajapaksa Stadium;Beliatta, Hambantota;2
+Duraiappah Stadium;Jaffna;2
+Colombo Racecourse Sports Complex;Colombo 07;2
+Nittawela Rugby Stadium;Kandy;2;r
+Royal College Sports Complex – Outdoor Stadium;Colombo 07;2
+Henry Pedris Ground;Colombo 05;1
+Havelock Sports Club Ground;Colombo 05;1;r
+CR & FC Rugby Ground;Colombo 07;2;r
+Police Park;Colombo 05;1
+Army Sports Ground;Colombo;1
+Navy Sports Ground;Welisara;1
+Air Force Sports Ground;Ratmalana;1
+Torrington Sports Grounds;Colombo 07;1
+Racecourse Rugby Ground;Colombo 07;1;r`],
+['cr','Cricket stadiums',`R. Premadasa International Cricket Stadium;Colombo;3
+Galle International Stadium;Galle;2
+Pallekele International Cricket Stadium;Kandy;3
+Rangiri Dambulla International Stadium;Dambulla;3
+Mahinda Rajapaksa International Cricket Stadium;Sooriyawewa;3
+Sinhalese Sports Club Cricket Ground (SSC);Colombo;2
+P. Sara Oval;Colombo;2
+Colombo Cricket Club Ground;Colombo;2
+Asgiriya Stadium;Kandy;2
+De Soysa Stadium;Moratuwa;1
+Welagedara Stadium;Kurunegala;1
+Uyanwatta Stadium;Matara;1
+Tyronne Fernando Stadium;Moratuwa;1`],
+['cx','Sports complexes',`North Western Provincial Sports Complex;Bingiriya;2
+Sabaragamuwa Provincial Sports Complex;Ratnapura;2
+Northern Provincial Sports Complex;Kilinochchi;2
+Gampaha District Sports Complex;Wathupitiwala;1
+Matara District Sports Complex;Kotawila;1
+Kalutara District Sports Complex;Bandaragama;1
+Galle District Sports Complex;Dadalla;1
+Polonnaruwa District Sports Complex;Gallella;1
+Vavuniya District Sports Complex;Vavuniya;1
+Mannar District Sports Complex;Nanattan;1`]];
+const PR={in:[3500,2000,9000],gr:[2500,1200,6000],cr:[6500,3000,18000],cx:[1500,800,4000]},EV={in:'Basketball Finals',gr:'Football Final',cr:'T20 International',cx:'Inter-district Games'},V=[];
+G.forEach(([g,,txt])=>txt.trim().split('\n').forEach(l=>{const[n,c,z,k]=l.split(';'),zi=+z,cc=k=='c',p=(cc?[9000,5000,28000]:PR[g]).map(x=>Math.round(x*[.7,.85,1][zi-1]/100)*100);
+ V.push({id:'v'+V.length,g,n,c,t:g=='in'?'in':'out',z:zi,k:cc?'concert':g=='in'?'court':g=='cr'?'cricket':k=='r'?'rugby':'football',e:cc?'Live in Concert':k=='r'?'Rugby Match':EV[g],p,ns:(g=='in'?[8,10,14]:[6,8,10])[zi-1]})}));
+const hs=s=>[...s].reduce((a,c)=>(a*31+c.charCodeAt(0))|0,7);
+const rnd=(a,b,c)=>{let h=(a*374761393+b*668265263+c*1442695041)|0;h=Math.imul(h^(h>>>13),1274126177);return((h^(h>>>16))>>>0)%100};
+let cur,blk=null,sel={},booked=new Set(),vb=[0,0,800,600],last=null,zt=0;
+const pt=(g,a,d)=>{const r=a*Math.PI/180;return[CX+(g.rx+d)*Math.cos(r),CY+(g.ry+d)*Math.sin(r)]};
+const zAt=(g,d)=>{const P=g.P;for(let i=0;i<3;i++)if(d<=P[i+1][0]||i==2){const t=Math.min(1,Math.max(0,(d-P[i][0])/(P[i+1][0]-P[i][0])));return P[i][1]+t*(P[i+1][1]-P[i][1])}};
+function build(v){
+ const o=v.t=='out',g={rx:o?170:190,ry:o?125:120,P:o?[[16,3],[68,22],[76,24],[126,56]]:[[16,2],[56,12],[62,14],[102,34]]},B=[],N=v.ns,st=360/N;
+ const ring=(id,tier,cat,price,a0,a1,d0,d1)=>{
+  const R=Math.round((d1-d0)/7),dm=(d0+d1)/2,rm=Math.sqrt(((g.rx+dm)**2+(g.ry+dm)**2)/2),S=Math.max(6,Math.round(rm*(a1-a0)*Math.PI/180/11));
+  const pos=(i,j)=>{const d=d0+(i+.5)/R*(d1-d0),a=a0+(j+.5)/S*(a1-a0),p=pt(g,a,d);return[p[0],p[1],zAt(g,d)+1.4]};
+  const path=[];for(let s=0;s<=8;s++)path.push(pt(g,a0+(a1-a0)*s/8,d0));for(let s=8;s>=0;s--)path.push(pt(g,a0+(a1-a0)*s/8,d1));
+  B.push({id,tier,cat,price,R,S,pos,path})};
+ for(let k=0;k<N;k++){if(v.k=='concert'&&k==N/2)continue;const a0=90+(k-.5)*st+1.2,a1=a0+st-2.4,vip=k==0;
+  ring('L'+(k+1),vip?(o?'Pavilion':'VIP lower tier'):'Lower tier',vip?'VIP':'Lower',v.p[vip?2:0],a0,a1,g.P[0][0],g.P[1][0]);
+  if(v.z>1)ring('U'+(k+1),'Upper tier','Upper',v.p[1],a0,a1,g.P[2][0],g.P[3][0])}
+ if(v.k=='concert')[[240,310,'F1'],[318,388,'F2']].forEach(([y0,y1,id])=>{const R=7,S=16,x0=280,x1=520;B.push({id,tier:'Seated floor',cat:'Floor',price:v.p[2],R,S,pos:(i,j)=>[x0+(j+.5)/S*(x1-x0),y0+(i+.5)/R*(y1-y0),.8+i*.35],path:[[x0,y0],[x1,y0],[x1,y1],[x0,y1]]})});
+ return{v,g,B,o}}
+function draw(){
+ const{v,g,o,B}=cur;let h=`<ellipse cx="400" cy="300" rx="${g.rx}" ry="${g.ry}" fill="${o?'#3f9d5a':v.k=='court'?'#b8884e':'#25263f'}" stroke="#fff" stroke-opacity=".6" stroke-width="1.5"/>`;
+ if(v.k=='court')h+=`<g fill="none" stroke="#fff" stroke-opacity=".85" stroke-width="2"><rect x="290" y="235" width="220" height="130"/><path d="M400 235V365"/><circle cx="400" cy="300" r="22"/></g>`;
+ if(v.k=='rugby')h+=`<g fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="1.5"><rect x="275" y="220" width="250" height="160"/><path d="M300 220V380M355 220V380M400 220V380M445 220V380M500 220V380"/></g>`;
+ if(v.k=='cricket')h+=`<rect x="372" y="295" width="56" height="10" fill="#d8c08a"/>`;
+ if(v.k=='football')h+=`<g fill="none" stroke="#fff" stroke-opacity=".8" stroke-width="1.5"><rect x="275" y="220" width="250" height="160"/><path d="M400 220V380"/><circle cx="400" cy="300" r="18"/><rect x="275" y="260" width="35" height="80"/><rect x="490" y="260" width="35" height="80"/></g>`;
+ if(v.k=='concert')h+=`<rect x="330" y="190" width="140" height="38" rx="4" fill="#7c3aed"/><text x="400" y="214" text-anchor="middle" fill="#fff" font-size="13" font-weight="700">Stage</text>`;
+ B.forEach(b=>{const n=b.path.length,c=b.path.reduce((a,p)=>[a[0]+p[0]/n,a[1]+p[1]/n],[0,0]);
+  h+=`<path class="blk" data-id="${b.id}" d="M${b.path.map(p=>p[0].toFixed(1)+' '+p[1].toFixed(1)).join('L')}Z" fill="${COL[b.cat]}"><title>${b.id}, ${b.tier}, ${fmt(b.price)}</title></path><text class="lb" x="${c[0].toFixed(1)}" y="${(c[1]+4).toFixed(1)}" text-anchor="middle">${b.id}</text>`});
+ svg.innerHTML=h+'<g id="seats"></g>'}
+const seatR=b=>{const p=b.pos(0,0),q=b.pos(0,1),r=b.pos(1,0);return Math.min(Math.hypot(p[0]-q[0],p[1]-q[1]),Math.hypot(p[0]-r[0],p[1]-r[1]))*.36};
+function seats(){
+ if(!blk)return;const b=blk,r=seatR(b);let h='';
+ for(let i=0;i<b.R;i++){const q=b.pos(i,-1.2);h+=`<text x="${q[0].toFixed(1)}" y="${(q[1]+r*.6).toFixed(1)}" font-size="${(r*1.7).toFixed(1)}" text-anchor="middle" fill="currentColor" opacity=".6">${L(i)}</text>`;
+  for(let j=0;j<b.S;j++){const p=b.pos(i,j),k=b.id+'-'+i+'-'+j,t=booked.has(cur.v.id+k)||rnd(hs(cur.v.id+b.id),i,j)<28;
+   h+=`<circle class="s${t?' x':sel[k]?' sel':''}" data-i="${i}" data-j="${j}" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${r.toFixed(2)}"><title>Row ${L(i)}, seat ${j+1}, ${fmt(b.price)}</title></circle>`}}
+ $('seats').innerHTML=h}
+function bbox(b){const xs=b.path.map(p=>p[0]),ys=b.path.map(p=>p[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);let w=(x1-x0)*1.3,h=(y1-y0)*1.3;if(w/h<4/3)w=h*4/3;else h=w*3/4;return[(x0+x1)/2-w/2,(y0+y1)/2-h/2,w,h]}
+function zoom(t,done){const id=++zt,f=vb.slice(),s=performance.now();(function st(n){if(id!=zt)return;const k=Math.min(1,(n-s)/650),e=1-Math.pow(1-k,3);vb=f.map((x,i)=>x+(t[i]-x)*e);svg.setAttribute('viewBox',vb.join(' '));if(k<1)requestAnimationFrame(st);else if(done)done()})(s)}
+function crumb(){$('crumb').innerHTML=blk?`<b>Block ${blk.id}</b>, ${blk.tier}, ${fmt(blk.price)} <span class="mut">(${blk.R*blk.S} seats)</span>`:'<span class="mut">Tap a block to zoom in and see its seats</span>';$('back').hidden=!blk}
+function openB(id){blk=cur.B.find(b=>b.id==id);svg.classList.add('z');svg.querySelector(`[data-id="${id}"]`).classList.add('on');$('seats').innerHTML='';crumb();zoom(bbox(blk),seats)}
+function closeB(){blk=null;$('seats').innerHTML='';svg.classList.remove('z');svg.querySelectorAll('.on').forEach(e=>e.classList.remove('on'));crumb();zoom([0,0,800,600])}
+const toast=m=>{$('msg').textContent=m;setTimeout(()=>{const e=$('msg');if(e)e.textContent=''},2200)};
+function tog(i,j){const k=blk.id+'-'+i+'-'+j;
+ if(sel[k]){delete sel[k];last=Object.values(sel).pop()||null}
+ else{if(Object.keys(sel).length>=6)return toast('You can book up to 6 seats at a time');sel[k]={k,b:blk,i,j};last=sel[k]}
+ seats();cart();pov(last)}
+function cart(){const a=Object.values(sel),tot=a.reduce((s,x)=>s+x.b.price,0);
+ $('cart').innerHTML='<h3>Your seats</h3>'+(a.length?a.map(x=>`<div class="row"><span>${x.b.id}, row ${L(x.i)}, seat ${x.j+1}</span><span>${fmt(x.b.price)} <button class="rm" data-k="${x.k}" aria-label="Remove seat">×</button></span></div>`).join('')+`<div class="row tot"><b>Total</b><b>${fmt(tot)}</b></div><button class="go" id="book">Book ${a.length} seat${a.length>1?'s':''}</button>`:'<p class="mut">No seats yet. Choose a block on the map, then tap up to 6 seats.</p>')+'<p id="msg" class="mut" style="margin:8px 0 0"></p>'}
+$('cart').onclick=e=>{const k=e.target.dataset&&e.target.dataset.k;if(k){delete sel[k];last=Object.values(sel).pop()||null;seats();cart();pov(last)}if(e.target.id=='book')modal()};
+function modal(){const m=$('modal');m.hidden=false;
+ m.innerHTML=`<div class="box"><h3>Confirm booking</h3><p class="mut" style="margin:0">${cur.v.n}, ${cur.v.e}</p><input id="nm" placeholder="Full name" autocomplete="name"><input id="ph" placeholder="Mobile number (+94…)" autocomplete="tel"><div class="btns"><button class="ghost" id="cn">Cancel</button><button class="go" id="ok">Confirm booking (demo)</button></div></div>`;
+ $('cn').onclick=()=>m.hidden=true;
+ $('ok').onclick=()=>{if(!$('nm').value.trim())return $('nm').focus();const a=Object.values(sel),ref='SLK-'+Math.random().toString(36).slice(2,8).toUpperCase();
+  a.forEach(x=>booked.add(cur.v.id+x.k));
+  m.innerHTML=`<div class="box"><h3>Booking confirmed</h3><p style="margin:0">Reference <b>${ref}</b></p><p class="mut" style="margin:0">${a.map(x=>x.b.id+L(x.i)+(x.j+1)).join(', ')}</p><button class="go" id="dn">Done</button></div>`;
+  sel={};last=null;$('dn').onclick=()=>m.hidden=true;seats();cart();pov(null)}}
+function info(){const v=cur.v;$('info').innerHTML=`<h2>${v.n}</h2><p class="mut" style="margin:0">${v.c}, ${cur.o?'outdoor':'indoor'} venue</p><p style="margin:8px 0 0"><b>${v.e}</b><br><span class="mut">Sat 12 Dec 2026, 7:00 PM</span></p><div class="leg">${[['VIP',v.p[2]],['Lower',v.p[0]],...(v.z>1?[['Upper',v.p[1]]]:[])].map(([c,p])=>`<span><i style="background:${COL[c]};border:0"></i>${c} ${fmt(p)}</span>`).join('')}${v.k!='concert'?'':`<span><i style="background:${COL.Floor};border:0"></i>Floor ${fmt(v.p[2])}</span>`}</div>`}
+function pov(s){
+ const cv=$('pov'),x=cv.getContext('2d'),W=640,H=360,F=400,{g,o,v}=cur;
+ if(!s){x.fillStyle='#1d2a3a';x.fillRect(0,0,W,H);x.fillStyle='#9fb6c3';x.font='600 18px Figtree,sans-serif';x.textAlign='center';x.fillText('Tap a seat to see your view',W/2,H/2);$('povcap').textContent='';return}
+ const sp=s.b.pos(s.i,s.j),tg=v.k=='concert'?[CX,215,8]:[CX,CY,0];let dx=tg[0]-sp[0],dy=tg[1]-sp[1];const Ld=Math.hypot(dx,dy)||1;dx/=Ld;dy/=Ld;
+ const pc=Math.atan2(sp[2]-tg[2],Ld)*.8,cp=Math.cos(pc),sn=Math.sin(pc);
+ const T=(X,Y,Z)=>{const vx=X-sp[0],vy=Y-sp[1],vz=Z-sp[2],a=-vx*dy+vy*dx,b=vx*dx+vy*dy;return[a,vz*cp+b*sn,b*cp-vz*sn]};
+ x.lineWidth=1.5;
+ const poly=(pts,fill,stk)=>{const c=pts.map(p=>T(p[0],p[1],p[2])),n=.5,out=[];
+  c.forEach((p,i)=>{const q=c[(i+1)%c.length],pi=p[2]>n,qi=q[2]>n;if(pi)out.push(p);if(pi!=qi){const t=(n-p[2])/(q[2]-p[2]);out.push([p[0]+t*(q[0]-p[0]),p[1]+t*(q[1]-p[1]),n])}});
+  if(out.length<2)return;x.beginPath();out.forEach((p,i)=>{const X=W/2+F*p[0]/p[2],Y=H/2-F*p[1]/p[2];i?x.lineTo(X,Y):x.moveTo(X,Y)});x.closePath();
+  if(fill){x.fillStyle=fill;x.fill()}if(stk){x.strokeStyle=stk;x.stroke()}};
+ const gr=x.createLinearGradient(0,0,0,H);if(o){gr.addColorStop(0,'#5aa6e0');gr.addColorStop(1,'#d5ecf8')}else{gr.addColorStop(0,'#08081c');gr.addColorStop(1,'#2d1b4e')}
+ x.fillStyle=gr;x.fillRect(0,0,W,H);
+ const segs=[];
+ for(let a=0;a<360;a+=4)for(let m=0;m<(v.z>1?3:1);m++){
+  if(v.k=='concert'&&Math.min(Math.abs(a-270),360-Math.abs(a-270))<180/v.ns)continue;
+  const P=g.P,d0=P[m][0],d1=P[m+1][0],z0=P[m][1],z1=P[m+1][1],A=pt(g,a,d0),B=pt(g,a+4,d0),C=pt(g,a+4,d1),D=pt(g,a,d1);
+  segs.push({q:[[A[0],A[1],z0],[B[0],B[1],z0],[C[0],C[1],z1],[D[0],D[1],z1]],d:((A[0]+C[0])/2-sp[0])**2+((A[1]+C[1])/2-sp[1])**2,a,m})}
+ segs.sort((p,q)=>q.d-p.d).forEach(q=>{const l=(q.a*7+q.m*13)%5*3+(o?0:-12);poly(q.q,q.m==1?`hsl(200,8%,${52+l}%)`:q.m?`hsl(215,45%,${40+l}%)`:`hsl(165,40%,${38+l}%)`)});
+ const ell=k=>Array.from({length:64},(_,i)=>[CX+g.rx*k*Math.cos(i/64*6.2832),CY+g.ry*k*Math.sin(i/64*6.2832),0]);
+ poly(ell(1),o?'#3e9a58':v.k=='court'?'#b8884e':'#1c1c36');
+ if(o){poly(ell(.8),'#47a862');poly(ell(.55),'#3e9a58');x.strokeStyle='#fff';poly(ell(.97),null,'rgba(255,255,255,.8)')}else if(v.k=='concert')poly(ell(.7),'#26264a');
+ if(v.k=='cricket'){poly([[372,295,0],[428,295,0],[428,305,0],[372,305,0]],'#d8c08a');[372,428].forEach(X=>poly([[X,298,0],[X,302,0],[X,302,3],[X,298,3]],'#fff','#fff'))}
+ if(v.k=='court'){const W2='#fff';poly([[290,235,0],[510,235,0],[510,365,0],[290,365,0]],null,W2);poly([[400,235,0],[400,365,0]],null,W2);poly(Array.from({length:24},(_,i)=>[400+22*Math.cos(i/24*6.2832),300+22*Math.sin(i/24*6.2832),0]),null,W2)}
+ if(v.k=='rugby'){const W2='rgba(255,255,255,.9)';poly([[275,220,0],[525,220,0],[525,380,0],[275,380,0]],null,W2);[300,355,400,445,500].forEach(X=>poly([[X,220,0],[X,380,0]],null,W2))}
+ if(v.k=='football'){const W2='rgba(255,255,255,.9)';poly([[275,220,0],[525,220,0],[525,380,0],[275,380,0]],null,W2);poly([[400,220,0],[400,380,0]],null,W2);poly(Array.from({length:24},(_,i)=>[400+18*Math.cos(i/24*6.2832),300+18*Math.sin(i/24*6.2832),0]),null,W2)}
+ if(v.k=='concert'){poly([[330,190,4],[470,190,4],[470,228,4],[330,228,4]],'#3b2f7a');poly([[330,228,4],[470,228,4],[470,228,0],[330,228,0]],'#1a1840','#7c3aed');
+  poly([[330,190,4],[470,190,4],[470,190,34],[330,190,34]],'#e8438f');poly([[338,190,8],[462,190,8],[462,190,30],[338,190,30]],'#ff9ccb');
+  poly([[318,198,4],[330,198,4],[330,198,24],[318,198,24]],'#111','#555');poly([[470,198,4],[482,198,4],[482,198,24],[470,198,24]],'#111','#555');
+  poly([[390,195,34],[300,300,0],[345,300,0]],'rgba(255,255,255,.10)');poly([[410,195,34],[455,300,0],[500,300,0]],'rgba(255,200,255,.10)')}
+ x.fillStyle='rgba(0,0,0,.45)';x.fillRect(0,H-22,W,22);x.fillStyle='rgba(255,255,255,.2)';x.fillRect(0,H-24,W,2);
+ $('povcap').textContent=`Block ${s.b.id}, row ${L(s.i)}, seat ${s.j+1}: about ${Math.round(Ld*(o?.45:.22))} m from the ${v.k=='concert'?'stage':o?'pitch centre':'court centre'}`}
+svg.onclick=e=>{const c=e.target.closest('.s');if(c){if(!c.classList.contains('x'))tog(+c.dataset.i,+c.dataset.j);return}const b=e.target.closest('.blk');if(b&&!blk)openB(b.dataset.id)};
+$('back').onclick=closeB;
+function pick(id){cur=build(V.find(x=>x.id==id));sel={};last=null;blk=null;zt++;vb=[0,0,800,600];svg.setAttribute('viewBox','0 0 800 600');svg.classList.remove('z');draw();crumb();info();cart();pov(null);tab=cur.v.g;chips()}
+let tab='in';
+function chips(){const q=$('q').value.trim().toLowerCase(),a=V.filter(v=>q?(v.n+' '+v.c).toLowerCase().includes(q):v.g==tab);
+ $('tabs').innerHTML=G.map(([g,n])=>`<button class="tab${g==tab&&!q?' on':''}" data-g="${g}">${n} <small>${V.filter(v=>v.g==g).length}</small></button>`).join('');
+ $('venues').innerHTML=a.map(v=>`<button class="chip${cur&&cur.v.id==v.id?' on':''}" data-id="${v.id}"><b>${v.n}</b><small>${v.c}</small></button>`).join('')||'<span class="mut">No venue matches that search.</span>'}
+$('tabs').onclick=e=>{const b=e.target.closest('.tab');if(b){tab=b.dataset.g;$('q').value='';chips()}};
+$('q').oninput=chips;
+$('venues').onclick=e=>{const c=e.target.closest('.chip');if(c)pick(c.dataset.id)};
+pick(V.find(v=>v.n.startsWith('R. Premadasa')).id);
+</script></body></html>

@@ -95,6 +95,99 @@ aside{min-width:0}
 @media(max-width:600px){header{padding:13px 16px}.theme-toggle{padding:8px 11px}.hero{min-height:430px;margin-bottom:14px;border-radius:0 0 22px 22px;background-position:58% center}.hero:before{background:linear-gradient(90deg,rgba(3,12,20,.9),rgba(3,12,20,.48)),linear-gradient(0deg,rgba(3,12,20,.55),transparent)}.hero h1{font-size:clamp(43px,13vw,62px)}.hero-copy{margin:16px 0 22px}.hero-stats{gap:18px;margin-top:28px}.hero-stat strong{font-size:20px}nav{top:6px;margin:0 9px 16px;padding:10px;border-radius:15px;gap:9px}.tabs{margin-right:-2px}.tab{font-size:13px;padding:8px 11px}#venues{max-height:94px}.chip{font-size:13px;padding:8px 11px}main{padding:0 10px 18px;gap:13px}aside{grid-template-columns:1fr;gap:13px}#cart{grid-column:auto}.card{border-radius:16px;padding:13px}.bar{align-items:flex-start;flex-wrap:wrap}#svg{min-height:250px}.note{font-size:12px;padding:0 12px 24px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
+
+/* Cross-device layout refinements */
+:root{color-scheme:light dark;scroll-padding-top:110px}
+body{min-width:320px;-webkit-text-size-adjust:100%;text-rendering:optimizeLegibility}
+button,input{touch-action:manipulation}
+button{ -webkit-tap-highlight-color:transparent }
+.hero,nav,main,.note{width:100%}
+nav{width:min(calc(100% - 32px),1320px)}
+main{grid-template-columns:minmax(0,1.65fr) minmax(290px,.95fr);align-items:start}
+main>.card,aside>.card{min-width:0}
+#svg{width:100%;height:auto;max-height:none;overflow:visible}
+#pov{width:100%;height:auto;aspect-ratio:16/9;object-fit:contain}
+#venues{overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.tabs{overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+.chip,.tab,.theme-toggle,.go,.ghost,.rm{min-height:42px}
+input{min-height:44px;min-width:0}
+.box{max-height:calc(100dvh - 32px);overflow:auto}
+#modal{padding:16px;overflow-y:auto}
+.box input{width:100%}
+@media(min-width:1200px){
+  main{gap:22px}
+  aside{gap:18px}
+  nav{padding:14px 18px}
+}
+@media(min-width:861px) and (max-width:1100px){
+  main{grid-template-columns:minmax(0,1.35fr) minmax(270px,.9fr);gap:14px}
+  aside{gap:14px}
+  .card{padding:16px}
+  nav{width:calc(100% - 28px)}
+}
+@media(max-width:860px){
+  main{grid-template-columns:minmax(0,1fr);gap:15px}
+  aside{grid-template-columns:repeat(2,minmax(0,1fr));align-items:start}
+  aside>#info{grid-column:1/-1}
+  #cart{grid-column:1/-1}
+  #pov{max-height:340px}
+  nav{width:calc(100% - 24px)}
+}
+@media(max-width:600px){
+  header{min-height:62px;gap:10px}
+  .hero{width:100%;min-height:clamp(390px,88svh,510px);padding:48px 20px 34px}
+  .hero-content{width:100%}
+  .hero-actions{align-items:flex-start}
+  .hero-cta{min-height:48px}
+  .hero-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+  .hero-stat strong{font-size:clamp(18px,5vw,22px)}
+  .hero-stat span{font-size:9px;letter-spacing:.07em}
+  nav{top:5px;width:calc(100% - 16px);padding:9px;margin-bottom:13px;gap:8px}
+  .tabs{gap:5px}
+  .tab{min-height:40px;padding:8px 10px;font-size:12px}
+  #q{min-height:44px;padding:10px 12px}
+  #venues{max-height:none;height:78px;align-items:stretch;gap:7px}
+  .chip{min-height:58px;padding:8px 11px;align-content:center}
+  .chip b{font-size:12px}
+  .chip small{font-size:11px}
+  main{padding:0 9px 16px;gap:11px}
+  .card{padding:12px;border-radius:15px}
+  .bar{align-items:center}
+  h2{font-size:20px}
+  h3{font-size:16px}
+  #svg{width:100%;min-height:0;max-height:none}
+  .leg{gap:7px 12px;font-size:12px}
+  aside{grid-template-columns:minmax(0,1fr);gap:11px}
+  aside>#info,#cart{grid-column:auto}
+  #pov{max-height:none}
+  .go{min-height:48px}
+  .note{padding:0 12px 22px;line-height:1.55}
+  .box{width:min(100%,420px);padding:17px}
+  .btns>*{flex:1}
+}
+@media(max-width:380px){
+  .logo{font-size:25px}
+  .theme-toggle{gap:5px;padding:7px 9px;font-size:12px}
+  .hero h1{font-size:42px}
+  .hero-copy{font-size:14px}
+  .hero-stats{gap:7px}
+  .hero-stat span{font-size:8px}
+  .chip{padding:7px 9px}
+  .card{padding:10px}
+  .row{font-size:13px}
+}
+@media(orientation:landscape) and (max-height:560px) and (max-width:950px){
+  .hero{min-height:310px;padding-top:35px;padding-bottom:30px}
+  .hero-stats{margin-top:18px}
+  nav{position:relative;top:auto}
+  aside{grid-template-columns:repeat(2,minmax(0,1fr))}
+  #cart{grid-column:1/-1}
+}
+@media(hover:none){
+  .chip:hover,.go:hover,.theme-toggle:hover{transform:none}
+  .tab,.chip,.go,.ghost,.theme-toggle{touch-action:manipulation}
+}
+
 </style></head><body>
 <header><div class="logo">Seat<span>LK</span></div><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme"><span class="theme-icon" id="themeIcon" aria-hidden="true">☾</span><span id="themeLabel">Dark mode</span></button></header>
 <section class="hero" aria-label="Discover live sports and events"><div class="hero-content"><div class="hero-kicker">Sri Lanka, live and loud</div><h1>Feel the game.<br><em>Own your seat.</em></h1><p class="hero-copy">Find your next unforgettable moment. Explore stadiums, discover events and choose the view that puts you right in the action.</p><div class="hero-actions"><a class="hero-cta" href="#booking">Explore venues <span aria-hidden="true">↗</span></a><span class="hero-sub">Your seat. Your moment.</span></div><div class="hero-stats"><div class="hero-stat"><strong id="venueCount">—</strong><span>Venues to explore</span></div><div class="hero-stat"><strong>4</strong><span>Venue collections</span></div><div class="hero-stat"><strong>360°</strong><span>Seat view preview</span></div></div></div></section>

@@ -92,7 +92,12 @@ aside{min-width:0}
 @keyframes heroIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @media(min-width:1000px){nav{grid-template-columns:minmax(0,1fr) minmax(230px,300px);align-items:center}.tabs{grid-column:1}.tabs+#q{grid-column:2;grid-row:1}#venues{grid-column:1/-1;max-height:86px}}
 @media(max-width:860px){main{grid-template-columns:minmax(0,1fr)}aside{grid-template-columns:repeat(2,minmax(0,1fr))}#cart{grid-column:1/-1}}
-@media(max-width:600px){header{padding:13px 16px}.theme-toggle{padding:8px 11px}.hero{min-height:430px;margin-bottom:14px;border-radius:0 0 22px 22px;background-position:58% center}.hero:before{background:linear-gradient(90deg,rgba(3,12,20,.9),rgba(3,12,20,.48)),linear-gradient(0deg,rgba(3,12,20,.55),transparent)}.hero h1{font-size:clamp(43px,13vw,62px)}.hero-copy{margin:16px 0 22px}.hero-stats{gap:18px;margin-top:28px}.hero-stat strong{font-size:20px}nav{top:6px;margin:0 9px 16px;padding:10px;border-radius:15px;gap:9px}.tabs{margin-right:-2px}.tab{font-size:13px;padding:8px 11px}#venues{max-height:94px}.chip{font-size:13px;padding:8px 11px}main{padding:0 10px 18px;gap:13px}aside{grid-template-columns:1fr;gap:13px}#cart{grid-column:auto}.card{border-radius:16px;padding:13px}.bar{align-items:flex-start;flex-wrap:wrap}#svg{min-height:250px}.note{font-size:12px;padding:0 12px 24px}}
+@media(max-width:600px){
+.location-bar{gap:8px;padding:8px;border-radius:12px;display:grid;grid-template-columns:1fr}
+.location-label{padding-left:3px}
+#locations{width:100%}
+.loc-chip{min-height:36px;padding:7px 11px;font-size:11px}
+header{padding:13px 16px}.theme-toggle{padding:8px 11px}.hero{min-height:430px;margin-bottom:14px;border-radius:0 0 22px 22px;background-position:58% center}.hero:before{background:linear-gradient(90deg,rgba(3,12,20,.9),rgba(3,12,20,.48)),linear-gradient(0deg,rgba(3,12,20,.55),transparent)}.hero h1{font-size:clamp(43px,13vw,62px)}.hero-copy{margin:16px 0 22px}.hero-stats{gap:18px;margin-top:28px}.hero-stat strong{font-size:20px}nav{top:6px;margin:0 9px 16px;padding:10px;border-radius:15px;gap:9px}.tabs{margin-right:-2px}.tab{font-size:13px;padding:8px 11px}#venues{max-height:94px}.chip{font-size:13px;padding:8px 11px}main{padding:0 10px 18px;gap:13px}aside{grid-template-columns:1fr;gap:13px}#cart{grid-column:auto}.card{border-radius:16px;padding:13px}.bar{align-items:flex-start;flex-wrap:wrap}#svg{min-height:250px}.note{font-size:12px;padding:0 12px 24px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 
 
@@ -114,6 +119,12 @@ input{min-height:44px;min-width:0}
 .box{max-height:calc(100dvh - 32px);overflow:auto}
 #modal{padding:16px;overflow-y:auto}
 .box input{width:100%}
+.location-bar{grid-column:1/-1;display:flex;align-items:center;gap:12px;min-width:0;padding:9px 11px;border:1px solid color-mix(in srgb,var(--line) 75%,transparent);border-radius:14px;background:color-mix(in srgb,var(--card) 56%,transparent);backdrop-filter:blur(18px) saturate(145%);-webkit-backdrop-filter:blur(18px) saturate(145%)}
+.location-label{flex:none;color:var(--mut);font-size:10px;font-weight:800;letter-spacing:.14em}
+#locations{display:flex;gap:7px;min-width:0;overflow-x:auto;scrollbar-width:none;padding:1px 1px 3px;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch}
+#locations::-webkit-scrollbar{display:none}
+.loc-chip{flex:none;min-height:35px;padding:7px 12px;border:1px solid var(--line);border-radius:999px;background:color-mix(in srgb,var(--card) 75%,transparent);color:var(--mut);font:600 12px Figtree,sans-serif;white-space:nowrap;cursor:pointer;transition:background .2s,border-color .2s,color .2s}
+.loc-chip.on{background:var(--acc);border-color:var(--acc);color:var(--onacc)}
 @media(min-width:1200px){
   main{gap:22px}
   aside{gap:18px}
@@ -191,7 +202,7 @@ input{min-height:44px;min-width:0}
 </style></head><body>
 <header><div class="logo">Seat<span>LK</span></div><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme"><span class="theme-icon" id="themeIcon" aria-hidden="true">☾</span><span id="themeLabel">Dark mode</span></button></header>
 <section class="hero" aria-label="Discover live sports and events"><div class="hero-content"><div class="hero-kicker">Sri Lanka, live and loud</div><h1>Feel the game.<br><em>Own your seat.</em></h1><p class="hero-copy">Find your next unforgettable moment. Explore stadiums, discover events and choose the view that puts you right in the action.</p><div class="hero-actions"><a class="hero-cta" href="#booking">Explore venues <span aria-hidden="true">↗</span></a><span class="hero-sub">Your seat. Your moment.</span></div><div class="hero-stats"><div class="hero-stat"><strong id="venueCount">—</strong><span>Venues to explore</span></div><div class="hero-stat"><strong>4</strong><span>Venue collections</span></div><div class="hero-stat"><strong>360°</strong><span>Seat view preview</span></div></div></div></section>
-<nav aria-label="Browse venues"><div class="tabs" id="tabs" aria-label="Venue categories"></div><input id="q" type="search" placeholder="⌕  Search a venue or town" aria-label="Search venues"><div id="venues" aria-live="polite"></div></nav>
+<nav aria-label="Browse venues"><div class="tabs" id="tabs" aria-label="Venue categories"></div><input id="q" type="search" placeholder="⌕  Search a venue or town" aria-label="Search venues"><div class="location-bar"><span class="location-label">LOCATION</span><div id="locations" aria-label="Filter by location"></div></div><div id="venues" aria-live="polite"></div></nav>
 <main id="booking">
 <section class="card"><div class="bar"><div id="crumb"></div><button class="ghost" id="back" hidden>Back to stadium</button></div>
 <svg id="svg" viewBox="0 0 800 600" role="img" aria-label="Stadium seating map"></svg>
@@ -270,7 +281,7 @@ Vavuniya District Sports Complex;Vavuniya;1
 Mannar District Sports Complex;Nanattan;1`]];
 const PR={in:[3500,2000,9000],gr:[2500,1200,6000],cr:[6500,3000,18000],cx:[1500,800,4000]},EV={in:'Basketball Finals',gr:'Football Final',cr:'T20 International',cx:'Inter-district Games'},V=[];
 G.forEach(([g,,txt])=>txt.trim().split('\n').forEach(l=>{const[n,c,z,k]=l.split(';'),zi=+z,cc=k=='c',p=(cc?[9000,5000,28000]:PR[g]).map(x=>Math.round(x*[.7,.85,1][zi-1]/100)*100);
- V.push({id:'v'+V.length,g,n,c,t:g=='in'?'in':'out',z:zi,k:cc?'concert':g=='in'?'court':g=='cr'?'cricket':k=='r'?'rugby':'football',e:cc?'Live in Concert':k=='r'?'Rugby Match':EV[g],p,ns:(g=='in'?[8,10,14]:[6,8,10])[zi-1]})}));
+ V.push({id:'v'+V.length,g:g=='in'?(cc?'shows':'inSport'):g,n,c,t:g=='in'?'in':'out',z:zi,k:cc?'concert':g=='in'?'court':g=='cr'?'cricket':k=='r'?'rugby':'football',e:cc?'Live in Concert':k=='r'?'Rugby Match':EV[g],p,ns:(g=='in'?[8,10,14]:[6,8,10])[zi-1]})}));
 $('venueCount').textContent=V.length+'+';
 const hs=s=>[...s].reduce((a,c)=>(a*31+c.charCodeAt(0))|0,7);
 const rnd=(a,b,c)=>{let h=(a*374761393+b*668265263+c*1442695041)|0;h=Math.imul(h^(h>>>13),1274126177);return((h^(h>>>16))>>>0)%100};
@@ -442,11 +453,18 @@ function pov(s){
 svg.onclick=e=>{const c=e.target.closest('.s');if(c){if(!c.classList.contains('x'))tog(+c.dataset.i,+c.dataset.j);return}const b=e.target.closest('.blk');if(b&&!blk)openB(b.dataset.id)};
 $('back').onclick=closeB;
 function pick(id){cur=build(V.find(x=>x.id==id));sel={};last=null;blk=null;zt++;vb=[0,0,800,600];svg.setAttribute('viewBox','0 0 800 600');svg.classList.remove('z');draw();crumb();info();cart();pov(null);tab=cur.v.g;chips()}
-let tab='in';
-function chips(){const q=$('q').value.trim().toLowerCase(),a=V.filter(v=>q?(v.n+' '+v.c).toLowerCase().includes(q):v.g==tab);
- $('tabs').innerHTML=G.map(([g,n])=>`<button class="tab${g==tab&&!q?' on':''}" data-g="${g}">${n} <small>${V.filter(v=>v.g==g).length}</small></button>`).join('');
- $('venues').innerHTML=a.map(v=>`<button class="chip${cur&&cur.v.id==v.id?' on':''}" data-id="${v.id}"><b>${v.n}</b><small>${v.c}</small></button>`).join('')||'<span class="mut">No venue matches that search.</span>'}
-$('tabs').onclick=e=>{const b=e.target.closest('.tab');if(b){tab=b.dataset.g;$('q').value='';chips()}};
+const CATS=[['inSport','Indoor sports'],['shows','Indoor shows & concerts'],['gr','Outdoor sports'],['cr','Cricket'],['cx','Sports complexes']];
+let tab='inSport',locationFilter='All locations';
+const locations=()=>['All locations',...new Set(V.map(v=>v.c).sort((a,b)=>a.localeCompare(b)))];
+function chips(){
+ const q=$('q').value.trim().toLowerCase(),all=V.filter(v=>v.g===tab&&(locationFilter==='All locations'||v.c===locationFilter));
+ const a=all.filter(v=>!q||(v.n+' '+v.c).toLowerCase().includes(q));
+ $('tabs').innerHTML=CATS.map(([g,n])=>`<button class="tab${g==tab?' on':''}" data-g="${g}">${n} <small>${V.filter(v=>v.g==g).length}</small></button>`).join('');
+ $('locations').innerHTML=locations().map(loc=>`<button class="loc-chip${loc===locationFilter?' on':''}" data-location="${loc}">${loc}</button>`).join('');
+ $('venues').innerHTML=a.map(v=>`<button class="chip${cur&&cur.v.id==v.id?' on':''}" data-id="${v.id}"><b>${v.n}</b><small>${v.c}</small></button>`).join('')||'<span class="mut">No venues match these filters.</span>';
+}
+$('tabs').onclick=e=>{const b=e.target.closest('.tab');if(b){tab=b.dataset.g;chips()}};
+$('locations').onclick=e=>{const b=e.target.closest('.loc-chip');if(b){locationFilter=b.dataset.location;chips()}};
 $('q').oninput=chips;
 $('venues').onclick=e=>{const c=e.target.closest('.chip');if(c)pick(c.dataset.id)};
 pick(V.find(v=>v.n.startsWith('R. Premadasa')).id);

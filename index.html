@@ -26,10 +26,15 @@ svg{width:100%;height:auto;display:block;color:var(--ink);touch-action:manipulat
 .blk{cursor:pointer;opacity:.85;stroke:var(--card);stroke-width:1;transition:opacity .2s}.blk:hover{opacity:1}
 .lb{font:700 11px "Bricolage Grotesque",sans-serif;fill:#fff;pointer-events:none}
 .z .blk{opacity:.12;pointer-events:none}.z .blk.on{opacity:.3}.z .lb{display:none}
-.s{fill:var(--ok);stroke:var(--acc);stroke-width:1;vector-effect:non-scaling-stroke;cursor:pointer}.s:hover{fill:var(--acc)}
-.s.x{fill:var(--taken);stroke:none;cursor:not-allowed}.s.sel{fill:var(--sel);stroke:#7a5200}
-.leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;color:var(--mut);font-size:13px}.leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:5px;background:var(--ok);border:1px solid var(--acc)}
-.leg i.t{background:var(--taken);border:0}.leg i.y{background:var(--sel);border-color:#7a5200}
+/* Clear, consistent seat status colours in both light and dark themes */
+.s{fill:#22c55e;stroke:#087a35;stroke-width:1.15;vector-effect:non-scaling-stroke;cursor:pointer;transition:fill .15s,stroke .15s}
+.s:hover{fill:#86efac;stroke:#087a35;stroke-width:1.8}
+.s.x{fill:#ef4444;stroke:#991b1b;stroke-width:1;cursor:not-allowed}
+.s.sel{fill:#facc15;stroke:#854d0e;stroke-width:2}
+.leg{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:8px;color:var(--mut);font-size:13px}
+.leg i{display:inline-block;width:11px;height:11px;border-radius:50%;margin-right:5px;background:#22c55e;border:1px solid #087a35;vertical-align:-1px}
+.leg i.t{background:#ef4444;border:1px solid #991b1b}
+.leg i.y{background:#facc15;border:1px solid #854d0e}
 canvas{width:100%;height:auto;display:block;border-radius:10px;background:#1d2a3a}
 h2{font-size:22px;letter-spacing:-.01em}h3{font-size:17px;margin-bottom:8px}
 .row{display:flex;justify-content:space-between;gap:8px;padding:6px 0;border-bottom:1px solid var(--line)}.tot{border:0;font-size:17px}
@@ -206,7 +211,8 @@ function seats(){
  if(!blk)return;const b=blk,r=seatR(b);let h='';
  for(let i=0;i<b.R;i++){const q=b.pos(i,-1.2);h+=`<text x="${q[0].toFixed(1)}" y="${(q[1]+r*.6).toFixed(1)}" font-size="${(r*1.7).toFixed(1)}" text-anchor="middle" fill="currentColor" opacity=".6">${L(i)}</text>`;
   for(let j=0;j<b.S;j++){const p=b.pos(i,j),k=b.id+'-'+i+'-'+j,t=booked.has(cur.v.id+k)||rnd(hs(cur.v.id+b.id),i,j)<28;
-   h+=`<circle class="s${t?' x':sel[k]?' sel':''}" data-i="${i}" data-j="${j}" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${r.toFixed(2)}"><title>Row ${L(i)}, seat ${j+1}, ${fmt(b.price)}</title></circle>`}}
+   const status=t?'Booked':sel[k]?'Selected':'Available';
+   h+=`<circle class="s${t?' x':sel[k]?' sel':''}" data-i="${i}" data-j="${j}" cx="${p[0].toFixed(1)}" cy="${p[1].toFixed(1)}" r="${r.toFixed(2)}"><title>${status} — Row ${L(i)}, seat ${j+1}, ${fmt(b.price)}</title></circle>`}}
  $('seats').innerHTML=h}
 function bbox(b){const xs=b.path.map(p=>p[0]),ys=b.path.map(p=>p[1]),x0=Math.min(...xs),x1=Math.max(...xs),y0=Math.min(...ys),y1=Math.max(...ys);let w=(x1-x0)*1.3,h=(y1-y0)*1.3;if(w/h<4/3)w=h*4/3;else h=w*3/4;return[(x0+x1)/2-w/2,(y0+y1)/2-h/2,w,h]}
 function zoom(t,done){const id=++zt,f=vb.slice(),s=performance.now();(function st(n){if(id!=zt)return;const k=Math.min(1,(n-s)/650),e=1-Math.pow(1-k,3);vb=f.map((x,i)=>x+(t[i]-x)*e);svg.setAttribute('viewBox',vb.join(' '));if(k<1)requestAnimationFrame(st);else if(done)done()})(s)}

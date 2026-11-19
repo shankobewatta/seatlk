@@ -40,11 +40,61 @@ h2{font-size:22px;letter-spacing:-.01em}h3{font-size:17px;margin-bottom:8px}
 .box{background:var(--card);padding:20px;border-radius:14px;width:min(92vw,380px);display:grid;gap:10px}
 input{font:inherit;padding:10px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink)}
 .btns{display:flex;gap:8px}.note{max-width:1280px;margin:0 auto;padding:0 16px 24px;color:var(--mut);font-size:13px}
-:focus-visible{outline:2px solid var(--acc);outline-offset:2px}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{overflow-x:hidden}
+header{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px clamp(16px,4vw,48px);max-width:1440px}
+header>p{display:none}
+.logo{font-size:clamp(27px,3vw,34px);letter-spacing:-1.5px}
+.theme-toggle{backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 8px 24px rgba(0,0,0,.08)}
+.hero{position:relative;isolation:isolate;min-height:clamp(390px,54vw,590px);max-width:1440px;margin:0 auto 22px;padding:clamp(48px,8vw,100px) clamp(20px,6vw,76px);display:flex;align-items:center;overflow:hidden;border-radius:0 0 28px 28px;color:#fff;background:#07131d url('https://images.unsplash.com/photo-1522778119026-d647f0596c20?auto=format&fit=crop&w=2000&q=85') center 48%/cover no-repeat}
+.hero:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(3,12,20,.92) 0%,rgba(3,12,20,.72) 48%,rgba(3,12,20,.16) 100%),linear-gradient(0deg,rgba(3,12,20,.55),transparent 55%)}
+.hero-content{max-width:720px;animation:heroIn .8s ease both}
+.hero-kicker{display:inline-flex;align-items:center;gap:9px;color:#b8eee6;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:18px}
+.hero-kicker:before{content:"";width:25px;height:2px;background:#4fd1c5}
+.hero h1{font-size:clamp(42px,7.2vw,88px);line-height:.98;letter-spacing:-.055em;max-width:760px}
+.hero h1 em{font-style:normal;color:#66e0d2}
+.hero-copy{font-size:clamp(15px,1.7vw,19px);line-height:1.6;color:rgba(255,255,255,.78);max-width:520px;margin:20px 0 26px}
+.hero-actions{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.hero-cta{display:inline-flex;align-items:center;justify-content:center;gap:10px;text-decoration:none;background:#4fd1c5;color:#06211f;font-weight:800;padding:14px 21px;border-radius:12px;box-shadow:0 10px 28px rgba(79,209,197,.2);transition:transform .2s,box-shadow .2s}
+.hero-cta:hover{transform:translateY(-3px);box-shadow:0 15px 34px rgba(79,209,197,.3)}
+.hero-sub{font-size:13px;color:rgba(255,255,255,.72)}
+.hero-stats{display:flex;gap:26px;margin-top:38px;flex-wrap:wrap}
+.hero-stat strong{display:block;font:800 23px "Bricolage Grotesque",sans-serif;color:#fff}
+.hero-stat span{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.65)}
+nav{position:sticky;top:10px;z-index:8;display:grid;gap:12px;padding:13px 16px;max-width:1320px;margin:0 auto 22px;border:1px solid rgba(130,160,170,.25);border-radius:18px;background:color-mix(in srgb,var(--card) 78%,transparent);backdrop-filter:blur(22px) saturate(150%);-webkit-backdrop-filter:blur(22px) saturate(150%);box-shadow:0 14px 38px rgba(0,0,0,.10)}
+.tabs{display:flex;gap:7px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding:1px 1px 4px}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;border:1px solid transparent;border-radius:999px;padding:9px 14px;white-space:nowrap;transition:background .2s,color .2s,border-color .2s}
+.tab.on{background:var(--acc);color:var(--onacc);border-color:var(--acc)}
+.tab small{margin-left:4px;opacity:.7}
+#q{width:100%;min-width:0;border-radius:11px;padding:12px 14px;background:var(--bg)}
+#venues{max-height:112px;overflow:auto;flex-wrap:nowrap;padding-bottom:3px;scrollbar-width:thin}
+.chip{border-radius:12px;padding:9px 13px;min-width:max-content;transition:transform .2s,border-color .2s,box-shadow .2s}
+.chip:hover{transform:translateY(-2px);border-color:var(--acc)}
+.chip.on{background:color-mix(in srgb,var(--acc) 10%,var(--card))}
+main{max-width:1320px;gap:20px;padding:0 16px 22px;scroll-margin-top:130px}
+.card{border-radius:19px;padding:clamp(14px,2vw,22px);box-shadow:0 10px 32px rgba(0,0,0,.045);transition:border-color .2s,box-shadow .2s}
+main>.card:first-child{min-width:0}
+aside{min-width:0}
+#svg{max-height: min(68vw,680px)}
+#info h2{font-size:clamp(20px,2.1vw,27px);line-height:1.15}
+.go,.ghost,.rm{transition:transform .18s,filter .18s,background .18s}
+.go:hover{filter:brightness(1.08);transform:translateY(-1px)}
+.ghost:hover{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,transparent)}
+.note{padding:0 18px 30px}
+@keyframes heroIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+@media(min-width:1000px){nav{grid-template-columns:minmax(0,1fr) minmax(230px,300px);align-items:center}.tabs{grid-column:1}.tabs+#q{grid-column:2;grid-row:1}#venues{grid-column:1/-1;max-height:86px}}
+@media(max-width:860px){main{grid-template-columns:minmax(0,1fr)}aside{grid-template-columns:repeat(2,minmax(0,1fr))}#cart{grid-column:1/-1}}
+@media(max-width:600px){header{padding:13px 16px}.theme-toggle{padding:8px 11px}.hero{min-height:430px;margin-bottom:14px;border-radius:0 0 22px 22px;background-position:58% center}.hero:before{background:linear-gradient(90deg,rgba(3,12,20,.9),rgba(3,12,20,.48)),linear-gradient(0deg,rgba(3,12,20,.55),transparent)}.hero h1{font-size:clamp(43px,13vw,62px)}.hero-copy{margin:16px 0 22px}.hero-stats{gap:18px;margin-top:28px}.hero-stat strong{font-size:20px}nav{top:6px;margin:0 9px 16px;padding:10px;border-radius:15px;gap:9px}.tabs{margin-right:-2px}.tab{font-size:13px;padding:8px 11px}#venues{max-height:94px}.chip{font-size:13px;padding:8px 11px}main{padding:0 10px 18px;gap:13px}aside{grid-template-columns:1fr;gap:13px}#cart{grid-column:auto}.card{border-radius:16px;padding:13px}.bar{align-items:flex-start;flex-wrap:wrap}#svg{min-height:250px}.note{font-size:12px;padding:0 12px 24px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
 </style></head><body>
-<header><div class="headrow"><div class="logo">Seat<span>LK</span></div><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme"><span class="theme-icon" id="themeIcon" aria-hidden="true">☾</span><span id="themeLabel">Dark mode</span></button></div><p>Pick your block, pick your seat, check the view before you book.</p></header>
-<nav><div class="tabs" id="tabs"></div><input id="q" type="search" placeholder="Search a venue or town" aria-label="Search venues"><div id="venues"></div></nav>
-<main>
+<header><div class="logo">Seat<span>LK</span></div><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme"><span class="theme-icon" id="themeIcon" aria-hidden="true">☾</span><span id="themeLabel">Dark mode</span></button></header>
+<section class="hero" aria-label="Discover live sports and events"><div class="hero-content"><div class="hero-kicker">Sri Lanka, live and loud</div><h1>Feel the game.<br><em>Own your seat.</em></h1><p class="hero-copy">Find your next unforgettable moment. Explore stadiums, discover events and choose the view that puts you right in the action.</p><div class="hero-actions"><a class="hero-cta" href="#booking">Explore venues <span aria-hidden="true">↗</span></a><span class="hero-sub">Your seat. Your moment.</span></div><div class="hero-stats"><div class="hero-stat"><strong id="venueCount">—</strong><span>Venues to explore</span></div><div class="hero-stat"><strong>4</strong><span>Venue collections</span></div><div class="hero-stat"><strong>360°</strong><span>Seat view preview</span></div></div></div></section>
+<nav aria-label="Browse venues"><div class="tabs" id="tabs" aria-label="Venue categories"></div><input id="q" type="search" placeholder="⌕  Search a venue or town" aria-label="Search venues"><div id="venues" aria-live="polite"></div></nav>
+<main id="booking">
 <section class="card"><div class="bar"><div id="crumb"></div><button class="ghost" id="back" hidden>Back to stadium</button></div>
 <svg id="svg" viewBox="0 0 800 600" role="img" aria-label="Stadium seating map"></svg>
 <div class="leg"><span><i></i>Available</span><span><i class="t"></i>Taken</span><span><i class="y"></i>Your pick</span></div></section>
@@ -123,6 +173,7 @@ Mannar District Sports Complex;Nanattan;1`]];
 const PR={in:[3500,2000,9000],gr:[2500,1200,6000],cr:[6500,3000,18000],cx:[1500,800,4000]},EV={in:'Basketball Finals',gr:'Football Final',cr:'T20 International',cx:'Inter-district Games'},V=[];
 G.forEach(([g,,txt])=>txt.trim().split('\n').forEach(l=>{const[n,c,z,k]=l.split(';'),zi=+z,cc=k=='c',p=(cc?[9000,5000,28000]:PR[g]).map(x=>Math.round(x*[.7,.85,1][zi-1]/100)*100);
  V.push({id:'v'+V.length,g,n,c,t:g=='in'?'in':'out',z:zi,k:cc?'concert':g=='in'?'court':g=='cr'?'cricket':k=='r'?'rugby':'football',e:cc?'Live in Concert':k=='r'?'Rugby Match':EV[g],p,ns:(g=='in'?[8,10,14]:[6,8,10])[zi-1]})}));
+$('venueCount').textContent=V.length+'+';
 const hs=s=>[...s].reduce((a,c)=>(a*31+c.charCodeAt(0))|0,7);
 const rnd=(a,b,c)=>{let h=(a*374761393+b*668265263+c*1442695041)|0;h=Math.imul(h^(h>>>13),1274126177);return((h^(h>>>16))>>>0)%100};
 let cur,blk=null,sel={},booked=new Set(),vb=[0,0,800,600],last=null,zt=0;

@@ -89,6 +89,28 @@ aside{min-width:0}
 .go:hover{filter:brightness(1.08);transform:translateY(-1px)}
 .ghost:hover{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 8%,transparent)}
 .note{padding:0 18px 30px}
+/* Stadium Mode: cinematic theme transition */
+body,.card,nav,.chip,.theme-toggle,.tab,.location-bar,.loc-chip,.ghost,input{
+ transition:background-color .85s ease,color .85s ease,border-color .85s ease,box-shadow .85s ease;
+}
+.stadium-transition{position:fixed;inset:0;z-index:99999;pointer-events:none;overflow:hidden;opacity:0;animation:stadiumScene .95s cubic-bezier(.2,.75,.25,1) both}
+.stadium-transition.to-dark{background:linear-gradient(180deg,rgba(3,12,25,.97),rgba(5,23,36,.84) 58%,rgba(4,10,19,.96));}
+.stadium-transition.to-light{background:linear-gradient(180deg,rgba(255,211,133,.94),rgba(255,238,202,.82) 58%,rgba(255,249,230,.96));}
+.stadium-transition:before{content:"";position:absolute;left:0;right:0;bottom:0;height:27%;background:repeating-linear-gradient(90deg,transparent 0 8px,rgba(0,0,0,.2) 9px 12px),linear-gradient(0deg,rgba(0,0,0,.65),transparent);clip-path:polygon(0 36%,8% 20%,17% 32%,25% 12%,34% 28%,43% 10%,52% 30%,62% 13%,71% 29%,80% 12%,90% 31%,100% 17%,100% 100%,0 100%);opacity:.8}
+.stadium-transition .stadium-title{position:absolute;left:50%;top:72%;transform:translate(-50%,-50%);font:800 clamp(13px,2vw,20px) "Bricolage Grotesque",sans-serif;letter-spacing:.22em;text-transform:uppercase;color:#fff;text-shadow:0 2px 18px rgba(0,0,0,.5);white-space:nowrap}
+.stadium-transition.to-light .stadium-title{color:#795326;text-shadow:none}
+.stadium-transition .lamp{position:absolute;top:13%;width:clamp(54px,8vw,105px);height:8px;border-radius:99px;background:#fff;box-shadow:0 0 10px 4px rgba(220,248,255,.85),0 0 36px 12px rgba(165,225,255,.55);animation:lampGlow .8s ease both}
+.stadium-transition .lamp.left{left:8%;transform:rotate(20deg)}
+.stadium-transition .lamp.right{right:8%;transform:rotate(-20deg)}
+.stadium-transition .beam{position:absolute;top:14%;width:38vw;height:80vh;opacity:0;filter:blur(8px);transform-origin:top center;animation:beamOn .9s ease-out both}
+.stadium-transition .beam.left{left:9%;transform:rotate(20deg);background:linear-gradient(180deg,rgba(220,248,255,.35),transparent 76%)}
+.stadium-transition .beam.right{right:9%;transform:rotate(-20deg);background:linear-gradient(180deg,rgba(220,248,255,.32),transparent 76%)}
+.stadium-transition.to-light .lamp{background:#fff4cf;box-shadow:0 0 12px 5px rgba(255,231,174,.8),0 0 42px 18px rgba(255,208,120,.45)}
+.stadium-transition.to-light .beam{display:none}
+@keyframes stadiumScene{0%{opacity:0}18%{opacity:1}72%{opacity:1}100%{opacity:0}}
+@keyframes lampGlow{0%{opacity:.15;filter:brightness(.3)}45%{opacity:1;filter:brightness(2)}100%{opacity:.9;filter:brightness(1)}}
+@keyframes beamOn{0%{opacity:0}35%{opacity:.9}100%{opacity:.24}}
+@media(prefers-reduced-motion:reduce){.stadium-transition{display:none!important}body,.card,nav,.chip,.theme-toggle,.tab,.location-bar,.loc-chip,.ghost,input{transition:none!important}}
 @keyframes heroIn{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
 @media(min-width:1000px){nav{grid-template-columns:minmax(0,1fr) minmax(230px,300px);align-items:center}.tabs{grid-column:1}.tabs+#q{grid-column:2;grid-row:1}#venues{grid-column:1/-1;max-height:86px}}
 @media(max-width:860px){main{grid-template-columns:minmax(0,1fr)}aside{grid-template-columns:repeat(2,minmax(0,1fr))}#cart{grid-column:1/-1}}
@@ -217,7 +239,21 @@ const $=id=>document.getElementById(id),svg=$('svg'),CX=400,CY=300,L=i=>String.f
 const themeKey='seatlk-theme';
 function setTheme(theme,save=true){document.documentElement.dataset.theme=theme;$('themeIcon').textContent=theme==='dark'?'☀':'☾';$('themeLabel').textContent=theme==='dark'?'Light mode':'Dark mode';$('themeToggle').setAttribute('aria-label',`Switch to ${theme==='dark'?'light':'dark'} theme`);if(save)try{localStorage.setItem(themeKey,theme)}catch(e){}}
 let initialTheme='light';try{initialTheme=localStorage.getItem(themeKey)|| (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}setTheme(initialTheme,false);
-$('themeToggle').addEventListener('click',()=>setTheme(document.documentElement.dataset.theme==='dark'?'light':'dark'));
+function switchTheme(){
+ const root=document.documentElement;
+ const next=root.dataset.theme==='dark'?'light':'dark';
+ if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){setTheme(next);return}
+ document.querySelector('.stadium-transition')?.remove();
+ const scene=document.createElement('div');
+ scene.className='stadium-transition '+(next==='dark'?'to-dark':'to-light');
+ scene.setAttribute('aria-hidden','true');
+ scene.innerHTML='<span class="lamp left"></span><span class="lamp right"></span><span class="beam left"></span><span class="beam right"></span><span class="stadium-title">'+(next==='dark'?'STADIUM NIGHT':'DAYLIGHT MODE')+'</span>';
+ document.body.appendChild(scene);
+ root.classList.add('theme-animating');
+ setTheme(next);
+ window.setTimeout(()=>{scene.remove();root.classList.remove('theme-animating')},1000);
+}
+$('themeToggle').addEventListener('click',switchTheme);
 const COL={VIP:'#d9922b',Lower:'#1f8f7e',Upper:'#3f6fb5',Floor:'#b4478f'};
 /* name;location;size class (1 small, 2 medium, 3 large);c=concert hall, r=rugby */
 const G=[['in','Indoor stadiums',`Sugathadasa Indoor Stadium;Colombo 13;3;c

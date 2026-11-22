@@ -381,8 +381,9 @@ function pov(s){
  if(!s){x.fillStyle='#101d2b';x.fillRect(0,0,W,H);const gr=x.createLinearGradient(0,0,0,H);gr.addColorStop(0,'#203b50');gr.addColorStop(1,'#101d2b');x.fillStyle=gr;x.fillRect(0,0,W,H);x.fillStyle='#d7e7ed';x.textAlign='center';x.font='600 23px Figtree,sans-serif';x.fillText('Choose a seat to preview the view',W/2,H/2);$('povcap').textContent='';return}
  const sp=s.b.pos(s.i,s.j),tg=v.k=='concert'?[CX,215,8]:[CX,CY,0];
  let dx=tg[0]-sp[0],dy=tg[1]-sp[1];const Ld=Math.hypot(dx,dy)||1;dx/=Ld;dy/=Ld;
- const pc=Math.atan2(sp[2]-tg[2],Ld)*.8,cp=Math.cos(pc),sn=Math.sin(pc);
- const T=(X,Y,Z)=>{const vx=X-sp[0],vy=Y-sp[1],vz=Z-sp[2],a=-vx*dy+vy*dx,b=vx*dx+vy*dy;return[a,vz*cp+b*sn,b*cp-vz*sn]};
+ const eyeZ=sp[2]+10; // seated eye height above the selected seat
+ const pc=Math.atan2(eyeZ-tg[2],Ld)*.82,cp=Math.cos(pc),sn=Math.sin(pc);
+ const T=(X,Y,Z)=>{const vx=X-sp[0],vy=Y-sp[1],vz=Z-eyeZ,a=-vx*dy+vy*dx,b=vx*dx+vy*dy;return[a,vz*cp+b*sn,b*cp-vz*sn]};
  const project=(X,Y,Z=0)=>{const p=T(X,Y,Z);if(p[2]<=.5)return null;return{x:W/2+F*p[0]/p[2],y:H/2-F*p[1]/p[2],d:p[2]}};
  const line3=(a,b,color,width=2)=>{const p=project(...a),q=project(...b);if(!p||!q)return;x.beginPath();x.moveTo(p.x,p.y);x.lineTo(q.x,q.y);x.strokeStyle=color;x.lineWidth=width;x.stroke()};
  const poly=(pts,fill,stroke)=>{const c=pts.map(p=>T(p[0],p[1],p[2])),near=.5,out=[];
@@ -481,10 +482,30 @@ function pov(s){
   // Coloured stage lights flare.
   [[350,150,'#ff63d8'],[480,140,'#61eaff'],[400,120,'#ffd36a']].forEach(([xx,yy,col])=>{const rg=x.createRadialGradient(xx,yy,2,xx,yy,85);rg.addColorStop(0,col+'aa');rg.addColorStop(1,col+'00');x.fillStyle=rg;x.fillRect(xx-85,yy-85,170,170)});
  }
+ // First-person seated framing: the viewer sits inside the stand, with
+ // subtle seat arms and a cushion edge visible in the near foreground.
+ x.save();
+ const seatShade=x.createLinearGradient(0,H*.78,0,H);
+ seatShade.addColorStop(0,'rgba(5,12,20,0)');
+ seatShade.addColorStop(.34,v.k==='concert'?'rgba(13,10,25,.58)':'rgba(7,18,25,.56)');
+ seatShade.addColorStop(1,v.k==='concert'?'#080812':'#071116');
+ x.fillStyle=seatShade;x.fillRect(0,H*.76,W,H*.24);
+ const arm=(side)=>{
+  x.save();x.translate(side==='left'?0:W,0);x.scale(side==='left'?1:-1,1);
+  const ag=x.createLinearGradient(0,H*.78,92,H);
+  ag.addColorStop(0,'rgba(105,126,139,.12)');ag.addColorStop(.35,'rgba(28,43,53,.82)');ag.addColorStop(1,'rgba(5,11,17,.98)');
+  x.fillStyle=ag;x.beginPath();x.moveTo(0,H);x.lineTo(0,H*.86);x.quadraticCurveTo(10,H*.81,30,H*.83);x.lineTo(76,H*.91);x.lineTo(92,H);x.closePath();x.fill();
+  x.strokeStyle='rgba(220,239,242,.18)';x.lineWidth=2;x.beginPath();x.moveTo(8,H*.865);x.quadraticCurveTo(28,H*.83,72,H*.92);x.stroke();x.restore();
+ };
+ arm('left');arm('right');
+ const cushion=x.createLinearGradient(0,H*.91,0,H);
+ cushion.addColorStop(0,'rgba(65,83,96,.28)');cushion.addColorStop(1,'rgba(3,8,13,.98)');
+ x.fillStyle=cushion;x.beginPath();x.moveTo(82,H);x.quadraticCurveTo(130,H*.91,W*.5,H*.925);x.quadraticCurveTo(W-130,H*.91,W-82,H);x.closePath();x.fill();
+ x.restore();
  // Subtle vignette and seat-view framing.
  const vg=x.createRadialGradient(W/2,H/2,150,W/2,H/2,590);vg.addColorStop(.55,'rgba(0,0,0,0)');vg.addColorStop(1,'rgba(0,0,0,.42)');x.fillStyle=vg;x.fillRect(0,0,W,H);
  x.fillStyle='rgba(0,0,0,.48)';x.fillRect(0,H-34,W,34);x.fillStyle='rgba(255,255,255,.82)';x.font='600 15px Figtree,sans-serif';x.textAlign='left';x.fillText(v.k=='concert'?'LIVE CONCERT • STAGE VIEW':v.k=='cricket'?'LIVE CRICKET • PITCH VIEW':v.k=='rugby'?'LIVE RUGBY • FIELD VIEW':v.k=='court'?'LIVE INDOOR SPORT • COURT VIEW':'LIVE FOOTBALL • PITCH VIEW',22,H-12);
- $('povcap').textContent=`Block ${s.b.id}, row ${L(s.i)}, seat ${s.j+1}: about ${Math.round(Ld*(o?.45:.22))} m from the ${v.k=='concert'?'stage':o?'pitch centre':'court centre'} • illustrative 3D-style preview`;
+ $('povcap').textContent=`SEATED POV • Block ${s.b.id}, row ${L(s.i)}, seat ${s.j+1}: about ${Math.round(Ld*(o?.45:.22))} m from the ${v.k=='concert'?'stage':o?'pitch centre':'court centre'} • illustrative 3D preview`;
 }
 svg.onclick=e=>{const c=e.target.closest('.s');if(c){if(!c.classList.contains('x'))tog(+c.dataset.i,+c.dataset.j);return}const b=e.target.closest('.blk');if(b&&!blk)openB(b.dataset.id)};
 $('back').onclick=closeB;

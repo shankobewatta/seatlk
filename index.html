@@ -221,6 +221,28 @@ input{min-height:44px;min-width:0}
   .tab,.chip,.go,.ghost,.theme-toggle{touch-action:manipulation}
 }
 
+
+/* Pre-booking group selector: frosted-glass entry gate */
+.party-gate{position:fixed;inset:0;z-index:10000;display:grid;place-items:center;padding:18px;background:rgba(5,15,24,.34);backdrop-filter:blur(13px) saturate(125%);-webkit-backdrop-filter:blur(13px) saturate(125%);animation:gateFade .35s ease both}
+.party-gate[hidden]{display:none}
+.party-panel{width:min(94vw,520px);padding:clamp(20px,4vw,30px);border:1px solid rgba(255,255,255,.28);border-radius:25px;background:linear-gradient(145deg,rgba(255,255,255,.88),rgba(226,242,241,.66));color:#102b30;box-shadow:0 28px 90px rgba(0,0,0,.28);backdrop-filter:blur(28px) saturate(155%);-webkit-backdrop-filter:blur(28px) saturate(155%)}
+:root[data-theme="dark"] .party-panel{background:linear-gradient(145deg,rgba(24,48,54,.91),rgba(12,29,36,.78));color:#e8f3f2;border-color:rgba(255,255,255,.16)}
+.party-kicker{font-size:10px;font-weight:800;letter-spacing:.18em;color:var(--acc);text-transform:uppercase}
+.party-panel h2{font-size:clamp(25px,5vw,34px);margin:7px 0 5px}
+.party-sub{margin:0 0 20px;color:var(--mut);font-size:14px}
+.party-options{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.party-option{min-width:0;min-height:112px;display:grid;place-items:center;align-content:center;gap:5px;border:1px solid rgba(80,120,125,.22);border-radius:16px;background:rgba(255,255,255,.48);color:inherit;cursor:pointer;transition:transform .2s,border-color .2s,background .2s,box-shadow .2s}
+:root[data-theme="dark"] .party-option{background:rgba(255,255,255,.055)}
+.party-option:hover{transform:translateY(-3px);border-color:var(--acc)}
+.party-option.on{border:2px solid var(--acc);background:rgba(79,209,197,.17);box-shadow:0 0 0 3px rgba(79,209,197,.12)}
+.party-icon{font-size:31px;line-height:1.2}
+.party-option strong{font-size:20px;line-height:1}
+.party-option small{font-size:11px;color:var(--mut)}
+.party-continue{margin-top:17px;width:100%;min-height:49px;border:0;border-radius:13px;background:var(--acc);color:var(--onacc);font:700 15px Figtree,sans-serif;cursor:pointer}
+.party-hint{text-align:center;margin:10px 0 0;font-size:11px;color:var(--mut)}
+@keyframes gateFade{from{opacity:0}to{opacity:1}}
+@media(max-width:420px){.party-options{gap:7px}.party-option{min-height:100px;border-radius:13px}.party-icon{font-size:27px}.party-option small{font-size:10px}}
+@media(prefers-reduced-motion:reduce){.party-gate,.party-option{animation:none;transition:none}}
 </style></head><body>
 <header><div class="logo">Seat<span>LK</span></div><button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme"><span class="theme-icon" id="themeIcon" aria-hidden="true">☾</span><span id="themeLabel">Dark mode</span></button></header>
 <section class="hero" aria-label="Discover live sports and events"><div class="hero-content"><div class="hero-kicker">Sri Lanka, live and loud</div><h1>Feel the game.<br><em>Own your seat.</em></h1><p class="hero-copy">Find your next unforgettable moment. Explore stadiums, discover events and choose the view that puts you right in the action.</p><div class="hero-actions"><a class="hero-cta" href="#booking">Explore venues <span aria-hidden="true">↗</span></a><span class="hero-sub">Your seat. Your moment.</span></div><div class="hero-stats"><div class="hero-stat"><strong id="venueCount">—</strong><span>Venues to explore</span></div><div class="hero-stat"><strong>4</strong><span>Venue collections</span></div><div class="hero-stat"><strong>360°</strong><span>Seat view preview</span></div></div></div></section>
@@ -234,9 +256,29 @@ input{min-height:44px;min-width:0}
 <div class="card" id="cart"></div></aside></main>
 <p class="note">Demo data: stand layouts are generic templates sized to each venue, not official plans; prices, events and seat availability are illustrative, and the seat view is a simplified 3D render, not official stadium imagery.</p>
 <div id="modal" hidden></div>
+
+<div class="party-gate" id="partyGate" role="dialog" aria-modal="true" aria-labelledby="partyTitle">
+ <div class="party-panel">
+  <div class="party-kicker">SeatLK • booking setup</div>
+  <h2 id="partyTitle">Who's coming along?</h2>
+  <p class="party-sub">Choose how many seats you need before exploring the seating map.</p>
+  <div class="party-options" id="partyOptions">
+   <button class="party-option" type="button" data-size="1" aria-pressed="false"><span class="party-icon" aria-hidden="true">🚶</span><strong>1</strong><small>Solo walker</small></button>
+   <button class="party-option on" type="button" data-size="2" aria-pressed="true"><span class="party-icon" aria-hidden="true">🏍️</span><strong>2</strong><small>Bike crew</small></button>
+   <button class="party-option" type="button" data-size="3" aria-pressed="false"><span class="party-icon" aria-hidden="true">🛺</span><strong>3</strong><small>Three-wheeler</small></button>
+   <button class="party-option" type="button" data-size="4" aria-pressed="false"><span class="party-icon" aria-hidden="true">🚗</span><strong>4</strong><small>Car group</small></button>
+   <button class="party-option" type="button" data-size="5" aria-pressed="false"><span class="party-icon" aria-hidden="true">🚐</span><strong>5</strong><small>Van crew</small></button>
+   <button class="party-option" type="button" data-size="6" aria-pressed="false"><span class="party-icon" aria-hidden="true">🚌</span><strong>6</strong><small>Big squad</small></button>
+  </div>
+  <button class="party-continue" id="partyContinue" type="button">Continue to seat selection <span aria-hidden="true">→</span></button>
+  <p class="party-hint">You can change your group size before choosing seats.</p>
+ </div>
+</div>
+
 <script>
 const $=id=>document.getElementById(id),svg=$('svg'),CX=400,CY=300,L=i=>String.fromCharCode(65+i),fmt=n=>'LKR '+n.toLocaleString();
 const themeKey='seatlk-theme';
+let partySize=2,partyUnlocked=false;
 function setTheme(theme,save=true){document.documentElement.dataset.theme=theme;$('themeIcon').textContent=theme==='dark'?'☀':'☾';$('themeLabel').textContent=theme==='dark'?'Light mode':'Dark mode';$('themeToggle').setAttribute('aria-label',`Switch to ${theme==='dark'?'light':'dark'} theme`);if(save)try{localStorage.setItem(themeKey,theme)}catch(e){}}
 let initialTheme='light';try{initialTheme=localStorage.getItem(themeKey)|| (matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}setTheme(initialTheme,false);
 function switchTheme(){
@@ -362,11 +404,16 @@ function closeB(){blk=null;$('seats').innerHTML='';svg.classList.remove('z');svg
 const toast=m=>{$('msg').textContent=m;setTimeout(()=>{const e=$('msg');if(e)e.textContent=''},2200)};
 function tog(i,j){const k=blk.id+'-'+i+'-'+j;
  if(sel[k]){delete sel[k];last=Object.values(sel).pop()||null}
- else{if(Object.keys(sel).length>=6)return toast('You can book up to 6 seats at a time');sel[k]={k,b:blk,i,j};last=sel[k]}
+ else{if(Object.keys(sel).length>=partySize)return toast('Your group needs exactly '+partySize+' seat'+(partySize>1?'s':'')+'.');sel[k]={k,b:blk,i,j};last=sel[k]}
  seats();cart();pov(last)}
-function cart(){const a=Object.values(sel),tot=a.reduce((s,x)=>s+x.b.price,0);
- $('cart').innerHTML='<h3>Your seats</h3>'+(a.length?a.map(x=>`<div class="row"><span>${x.b.id}, row ${L(x.i)}, seat ${x.j+1}</span><span>${fmt(x.b.price)} <button class="rm" data-k="${x.k}" aria-label="Remove seat">×</button></span></div>`).join('')+`<div class="row tot"><b>Total</b><b>${fmt(tot)}</b></div><button class="go" id="book">Book ${a.length} seat${a.length>1?'s':''}</button>`:'<p class="mut">No seats yet. Choose a block on the map, then tap up to 6 seats.</p>')+'<p id="msg" class="mut" style="margin:8px 0 0"></p>'}
-$('cart').onclick=e=>{const k=e.target.dataset&&e.target.dataset.k;if(k){delete sel[k];last=Object.values(sel).pop()||null;seats();cart();pov(last)}if(e.target.id=='book')modal()};
+function showPartyGate(){const gate=$('partyGate');gate.hidden=false;document.body.style.overflow='hidden'}
+function hidePartyGate(){const gate=$('partyGate');gate.hidden=true;document.body.style.overflow='';partyUnlocked=true;cart()}
+function setPartySize(n){partySize=Math.max(1,Math.min(6,n));$('partyOptions').querySelectorAll('.party-option').forEach(b=>{const on=+b.dataset.size===partySize;b.classList.toggle('on',on);b.setAttribute('aria-pressed',String(on))})}
+$('partyOptions').onclick=e=>{const b=e.target.closest('.party-option');if(b)setPartySize(+b.dataset.size)};
+$('partyContinue').onclick=hidePartyGate;
+function cart(){const a=Object.values(sel),tot=a.reduce((s,x)=>s+x.b.price,0),ready=a.length===partySize;
+ $('cart').innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><h3>Your seats</h3><button class="ghost" id="changeParty" type="button" style="min-height:34px;padding:5px 10px;font-size:12px">Group: '+partySize+' · Change</button></div><p class="mut" style="font-size:12px;margin:0 0 8px">Select '+partySize+' seat'+(partySize>1?'s':'')+' for your group ('+a.length+'/'+partySize+' selected).</p>'+(a.length?a.map(x=>`<div class="row"><span>${x.b.id}, row ${L(x.i)}, seat ${x.j+1}</span><span>${fmt(x.b.price)} <button class="rm" data-k="${x.k}" aria-label="Remove seat">×</button></span></div>`).join('')+`<div class="row tot"><b>Total</b><b>${fmt(tot)}</b></div>`+(ready?`<button class="go" id="book">Book ${a.length} seat${a.length>1?'s':''}</button>`:'<p class="mut" style="margin:8px 0 0">Choose '+(partySize-a.length)+' more seat'+(partySize-a.length>1?'s':'')+' to continue.</p>'):'<p class="mut">Choose a block on the map, then select '+partySize+' seat'+(partySize>1?'s':'')+'.</p>')+'<p id="msg" class="mut" style="margin:8px 0 0"></p>'}
+$('cart').onclick=e=>{const k=e.target.dataset&&e.target.dataset.k;if(k){delete sel[k];last=Object.values(sel).pop()||null;seats();cart();pov(last)}if(e.target.id==='book'&&Object.keys(sel).length===partySize)modal();if(e.target.id==='changeParty'){setPartySize(partySize);showPartyGate()}};
 function modal(){const m=$('modal');m.hidden=false;
  m.innerHTML=`<div class="box"><h3>Confirm booking</h3><p class="mut" style="margin:0">${cur.v.n}, ${cur.v.e}</p><input id="nm" placeholder="Full name" autocomplete="name"><input id="ph" placeholder="Mobile number (+94…)" autocomplete="tel"><div class="btns"><button class="ghost" id="cn">Cancel</button><button class="go" id="ok">Confirm booking (demo)</button></div></div>`;
  $('cn').onclick=()=>m.hidden=true;
@@ -525,4 +572,5 @@ $('locations').onclick=e=>{const b=e.target.closest('.loc-chip');if(b){locationF
 $('q').oninput=chips;
 $('venues').onclick=e=>{const c=e.target.closest('.chip');if(c)pick(c.dataset.id)};
 pick(V.find(v=>v.n.startsWith('R. Premadasa')).id);
+showPartyGate();
 </script></body></html>
